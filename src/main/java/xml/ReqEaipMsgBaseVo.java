@@ -40,7 +40,8 @@ public class ReqEaipMsgBaseVo {
         XStream xstream = new XStream();
         xstream.autodetectAnnotations(true);
         xstream.processAnnotations(this.getClass());
-        // xstream.aliasSystemAttribute(null, "class");加上这一句之后，反序列化会有问题
+        // 加上这一句之后，反序列化会有问题
+        // xstream.aliasSystemAttribute(null, "class");
 
         // xstream.alias("ReqEaipMsgBase", this.getClass());
         return xstream.toXML(this);

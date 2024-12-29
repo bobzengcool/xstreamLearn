@@ -6,9 +6,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("service")
 public class ReqEaipMsg8901 {
 
-    @XStreamAlias("msg_head")
+    @XStreamAlias("head")
     private Head head;
-    @XStreamAlias("msg_body")
+    @XStreamAlias("body")
     @SerializedName("body")
     private ReqEaipMsg8901Body object;
 

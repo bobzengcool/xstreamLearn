@@ -1,5 +1,7 @@
 package xml;
 
+import java.util.Objects;
+
 import com.thoughtworks.xstream.XStream;
 
 public class XmlMsgTool {
@@ -41,17 +43,21 @@ public class XmlMsgTool {
      * @return 转换后的目标类型对象，如果转换出现问题可能返回null（可根据实际需求优化异常处理逻辑）
      */
     public static <T> T xmlToObject(String xml, Class<T> type, Class<?>[] additionalClasses) {
+        Objects.requireNonNull(xml, "XML content must not be null");
+        Objects.requireNonNull(type, "Target type must not be null");
+
         XStream xstream = new XStream();
         xstream.autodetectAnnotations(true);
         xstream.processAnnotations(type);
+
         if (additionalClasses != null && additionalClasses.length > 0) {
             xstream.allowTypes(additionalClasses);
         }
 
         try {
-            return (T) xstream.fromXML(xml);
+            return type.cast(xstream.fromXML(xml));
         } catch (Exception e) {
-            e.printStackTrace();
+            // LOGGER.log(Level.SEVERE, "Error converting XML to object", e);
             return null;
         }
     }

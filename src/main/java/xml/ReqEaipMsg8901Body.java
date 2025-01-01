@@ -3,7 +3,6 @@ package xml;
 import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 // @XStreamAlias("msg_body")
 public class ReqEaipMsg8901Body extends HXZ03BaseVo {

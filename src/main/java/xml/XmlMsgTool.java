@@ -1,6 +1,12 @@
 package xml;
 
 import java.util.Objects;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -14,18 +20,34 @@ public class XmlMsgTool {
      * @return XML报文形式的字符串，如果转换出现问题可能返回空字符串（可根据实际需求优化异常处理逻辑）
      */
     public static <T> String objectToXml(T obj, Class<?>[] additionalClasses) {
-        XStream xstream = new XStream();
-        xstream.autodetectAnnotations(true);
-        xstream.aliasSystemAttribute(null, "class");
-        if (obj != null) {
-            Class<?> clazz = obj.getClass();
-            xstream.processAnnotations(clazz);
-        }
-        if (additionalClasses != null && additionalClasses.length > 0) {
-            xstream.allowTypes(additionalClasses);
-        }
-
         try {
+            // Validate the object
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
+            Set<ConstraintViolation<T>> violations = validator.validate(obj);
+            System.out.println("objectToXml 转换报文前," + violations.size());
+
+            if (!violations.isEmpty()) {
+                StringBuilder validationErrors = new StringBuilder("Validation failed:");
+                for (ConstraintViolation<T> violation : violations) {
+                    validationErrors.append(" ").append(violation.getRootBean()).append(violation.getPropertyPath())
+                            .append(violation.getMessage());
+
+                }
+                throw new IllegalArgumentException(validationErrors.toString());
+            }
+
+            XStream xstream = new XStream();
+            xstream.autodetectAnnotations(true);
+            xstream.aliasSystemAttribute(null, "class");
+            if (obj != null) {
+                Class<?> clazz = obj.getClass();
+                xstream.processAnnotations(clazz);
+            }
+            if (additionalClasses != null && additionalClasses.length > 0) {
+                xstream.allowTypes(additionalClasses);
+            }
+
             return xstream.toXML(obj);
         } catch (Exception e) {
             e.printStackTrace();

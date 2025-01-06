@@ -1,13 +1,19 @@
 package xml;
 
+import javax.validation.Valid;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.google.gson.annotations.SerializedName;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 @XStreamAlias("service")
 public class ReqEaipMsg8901 {
-
+    @Valid
     @XStreamAlias("head")
     private Head head;
+
+    @Valid
     @XStreamAlias("body")
     @SerializedName("body")
     private ReqEaipMsg8901Body object;
@@ -36,8 +42,9 @@ public class ReqEaipMsg8901 {
     }
 }
 
-class Head {
+class Head extends HXZ03BaseVo {
     // 这里简单定义一些头的属性示例，实际按具体eaip请求报文头完善
+    @NotBlank
     private String msgId;
 
     public String getMsgId() {

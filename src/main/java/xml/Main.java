@@ -46,16 +46,26 @@ class Test {
         body8901.setHeadVersion("1.0");
         body8901.setBody8901("this is 8901body");
         body8901.setList(stringList);
+        body8901.setTestString("testString");
 
         ReqEaipMsg8901 reqEaipMsg8901 = new ReqEaipMsg8901(body8901);
 
+        reqEaipMsg8901.getHead().setMsgId("TTTTT");
+        reqEaipMsg8901.getHead().setHeadTranCode("hhh");
+        reqEaipMsg8901.getHead().setHeadVersion("vvvv");
         // 将报文反序列化为对象
         Class<?>[] classes = new Class[] {
                 ReqEaipMsg8901.class
         };
 
+        // Validator validator =
+        // Validation.buildDefaultValidatorFactory().getValidator();
+        // Set<ConstraintViolation<ReqEaipMsg8901>> violations =
+        // validator.validate(reqEaipMsg8901);
+        // System.out.println("xxxxxxxxxxxxxxxxxxxxxx55=" + violations.size());
+
         String msg_str = XmlMsgTool.objectToXml(reqEaipMsg8901, classes);
-        System.out.println("===================================\n" + msg_str);
+        System.out.println("============对象转化为报文后为=======================\n" + msg_str);
 
         ReqEaipMsg8901 vo = XmlMsgTool.xmlToObject(msg_str, ReqEaipMsg8901.class, classes);
         System.out.println("打印字段8901HEAD==" + vo.getHead().getMsgId());

@@ -1,10 +1,14 @@
 package xml;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 public class HXZ03BaseVo {
+    @NotBlank
     @XStreamAlias("version")
     private String HeadVersion;
+    @NotBlank
     @XStreamAlias("trancode")
     private String HeadTranCode;
 
